@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Book Journey</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="hero-header">
+    <nav class="main-nav">
+        <a href="index.html" class="nav-btn active">HOME</a>
+        <a href="younger.html" class="nav-btn">YOUNGER</a>
+        <a href="older.html" class="nav-btn">OLDER</a>
+        <a href="about.html" class="nav-btn">ABOUT</a>
+      </nav>
+  </header>
+
+  <section class="hero-banner">
+    <p class="hero-subtext">HELLO, WELCOME!</p>
+    <h1>
+      I'm Natasha, a <span class="gradient-accent">Book Explorer</span><br>
+      passionate about curating memorable reading experiences
+    </h1>
+    <p class="hero-subtext">
+      This is where I share the stories that shaped my imagination—<br>
+      from whimsical childhood tales to thought-provoking reads today.
+    </p>
+  </section>
+
+  <section class="image-scroll">
+    <div class="carousel-track">
+      <img src="imgs/Hero1.jpg" alt="Slide 1">
+      <img src="imgs/Hero2.jpg" alt="Slide 2">
+      <img src="imgs/Hero3.jpg" alt="Slide 3">
+      <img src="imgs/Hero4.jpg" alt="Slide 4">
+      <img src="imgs/Hero5.jpg" alt="Slide 5">
+      <img src="imgs/Hero6.jpg" alt="Slide 6">
+    </div>
+    <div class="carousel-buttons">
+      <button class="carousel-button" id="prevBtn">&#10094;</button>
+      <button class="carousel-button" id="nextBtn">&#10095;</button>
+    </div>
+  </section>
+
+  <footer id="site-footer">
+    © <span id="footer-year"></span> My Book Journey · Designed by Natasha
+  </footer>
+  <script src="js/script.js"></script>
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img id="lightboxImg" src="" alt="Expanded Book Cover">
+  </div>
+</body>
+</html>

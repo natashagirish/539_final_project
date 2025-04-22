@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The First 14 Years</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="hero-header">
+    <nav class="main-nav">
+        <a href="index.html" class="nav-btn">HOME</a>
+        <a href="younger.html" class="nav-btn active">YOUNGER</a>
+        <a href="older.html" class="nav-btn">OLDER</a>
+        <a href="about.html" class="nav-btn">ABOUT</a>
+      </nav>
+    <h1>THE FIRST 14 YEARS</h1>
+    <h2>All of my most memorable books, shows, and movies from childhood to the end of middle school.</h2>
+  </header>
+  <div class="filter-buttons">
+    <button class="filter-btn" data-genre="all">All</button>
+    <button class="filter-btn" data-genre="mystery">Mystery</button>
+    <button class="filter-btn" data-genre="slice">Slice of Life</button>
+    <button class="filter-btn" data-genre="fantasy">Fantasy</button>
+    <button class="filter-btn" data-genre="horror">Horror</button>
+  </div>
+  <main class="book-grid" id="kidBookList"></main>
+  <footer id="site-footer">
+    © <span id="footer-year"></span> My Book Journey · Designed by Natasha
+  </footer>
+  <script src="js/script.js"></script>
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img id="lightboxImg" src="" alt="Expanded Book Cover">
+  </div>
+</body>
+</html>

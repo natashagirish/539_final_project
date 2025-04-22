@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Books I'm Reading Now</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="hero-header">
+    <nav class="main-nav">
+        <a href="index.html" class="nav-btn">HOME</a>
+        <a href="younger.html" class="nav-btn">YOUNGER</a>
+        <a href="older.html" class="nav-btn active">OLDER</a>
+        <a href="about.html" class="nav-btn">ABOUT</a>
+      </nav>
+    <h1>WHAT I'M INTO NOW</h1>
+    <h2>Books I’ve read recently or am currently enjoying as an adult!</h2>
+  </header>
+  <div class="filter-buttons">
+    <button class="filter-btn" data-genre="all">All</button>
+    <button class="filter-btn" data-genre="literaryfiction">Literary Fiction</button>
+    <button class="filter-btn" data-genre="speculative">Speculative</button>
+    <button class="filter-btn" data-genre="historicalfiction">Historical Fiction</button>
+    <button class="filter-btn" data-genre="selfhelp">Self Help</button>
+    <button class="filter-btn" data-genre="thriller">Thriller</button>
+  </div>
+  <main class="book-grid" id="nowBookList"></main>
+  <footer id="site-footer">
+    © <span id="footer-year"></span> My Book Journey · Designed by Natasha
+  </footer>
+  <script src="js/script.js"></script>
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img id="lightboxImg" src="" alt="Expanded Book Cover">
+  </div>
+</body>
+</html>
