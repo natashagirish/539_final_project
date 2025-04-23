@@ -163,8 +163,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (containerId) {
+        displayBooks(bookArray, containerId);
+
         const list = document.getElementById(containerId);
         const storedBooks = JSON.parse(localStorage.getItem(storageKey) || "[]");
+
+        storedBooks.forEach(book => {
+            const card = document.createElement("div");
+            card.className = "book";
+            card.innerHTML = `
+                <img src="${book.img}" alt="Cover of ${book.title}">
+                <h3>${book.title}</h3>
+                <div class="book-rating">${book.rating}</div>
+                <p>${book.review}</p>
+            `;
+            list.appendChild(card);
+        });
+
         renderBooks("all", bookArray, storedBooks, list);
     }
 
@@ -257,42 +272,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            if (file.size > 1024 * 1024) {
-                alert("Image too large! Please upload an image under 1MB.");
-                return;
-            }
-
             const reader = new FileReader();
             reader.onload = function (event) {
-                const img = new Image();
-                img.onload = function () {
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext("2d");
-
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-
-                    const compressed = canvas.toDataURL("image/jpeg", 0.6); // Compress
-
-                    const newBook = {
-                        title: bookTitle.value,
-                        genre: bookGenre.value,
-                        rating: convertRatingToStars(bookRating.value),
-                        review: bookReview.value,
-                        img: compressed
-                    };
-
-                    const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
-                    existing.push(newBook);
-                    localStorage.setItem(storageKey, JSON.stringify(existing));
-
-                    renderBooks("all", bookArray, existing, bookList);
-                    formOverlay.style.display = "none";
-                    bookForm.reset();
+                const newBook = {
+                    title: bookTitle.value,
+                    genre: bookGenre.value,
+                    rating: convertRatingToStars(bookRating.value),
+                    review: bookReview.value,
+                    img: event.target.result
                 };
 
-                img.src = event.target.result;
+                const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
+                existing.push(newBook);
+                localStorage.setItem(storageKey, JSON.stringify(existing));
+
+                const card = document.createElement("div");
+                card.className = "book";
+                card.innerHTML = `
+                    <img src="${newBook.img}" alt="Cover of ${newBook.title}">
+                    <h3>${newBook.title}</h3>
+                    <div class="book-rating">${newBook.rating}</div>
+                    <p>${newBook.review}</p>
+                `;
+                bookList.appendChild(card);
+                formOverlay.style.display = "none";
+                bookForm.reset();
+                card.scrollIntoView({ behavior: "smooth" });
             };
 
             reader.readAsDataURL(file);
@@ -322,3 +327,6 @@ function renderBooks(filter, baseBooks, savedBooks, list) {
             list.appendChild(bookEl);
         });
 }
+
+displayBooks(kidBooks, 'kidBookList');
+displayBooks(nowBooks, 'nowBookList');
