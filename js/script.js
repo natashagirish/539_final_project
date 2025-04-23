@@ -263,6 +263,66 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const addBookBtn = document.getElementById("addBookBtn");
+    const formOverlay = document.getElementById("formOverlay");
+    const cancelForm = document.getElementById("cancelForm");
+    const bookForm = document.getElementById("bookForm");
+
+    const bookTitle = document.getElementById("bookTitle");
+    const bookGenre = document.getElementById("bookGenre");
+    const bookRating = document.getElementById("bookRating");
+    const bookReview = document.getElementById("bookReview");
+    const bookImage = document.getElementById("bookImage");
+    const bookList = document.getElementById("nowBookList") || document.getElementById("kidBookList");
+
+    // ⭐ Convert number rating (1–5) to stars
+    function convertRatingToStars(num) {
+        return "⭐️".repeat(Math.max(1, Math.min(5, parseInt(num))));
+    }
+
+    // Show the overlay form
+    addBookBtn.addEventListener("click", () => {
+        formOverlay.style.display = "flex";
+    });
+
+    // Hide the overlay form
+    cancelForm.addEventListener("click", () => {
+        formOverlay.style.display = "none";
+        bookForm.reset();
+    });
+
+    // Handle form submission
+    bookForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const file = bookImage.files[0];
+        if (!file || !file.type.startsWith("image/")) {
+            alert("Please upload a valid image.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const card = document.createElement("div");
+            card.className = "book";
+            card.innerHTML = `
+          <img src="${event.target.result}" alt="Cover of ${bookTitle.value}">
+          <h3>${bookTitle.value}</h3>
+          <div class="book-rating">${convertRatingToStars(bookRating.value)}</div>
+          <p>${bookReview.value}</p>
+        `;
+            bookList.appendChild(card);
+            formOverlay.style.display = "none";
+            bookForm.reset();
+            card.scrollIntoView({ behavior: "smooth" });
+        };
+
+        reader.readAsDataURL(file);
+    });
+});
+
+
 // Page fade-in effect
 document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("fade-in"); // Trigger CSS fade-in

@@ -1,31 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Books I'm Reading Now</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
   <header class="hero-header">
+    <div class="skip"><a href="#main">Skip to Main Content</a></div>
     <nav class="main-nav">
-        <a href="index.html" class="nav-btn">HOME</a>
-        <a href="younger.html" class="nav-btn">YOUNGER</a>
-        <a href="older.html" class="nav-btn active">OLDER</a>
-        <a href="about.html" class="nav-btn">ABOUT</a>
-      </nav>
+      <a href="index.html" class="nav-btn">HOME</a>
+      <a href="younger.html" class="nav-btn">YOUNGER</a>
+      <a href="older.html" class="nav-btn active">OLDER</a>
+      <a href="about.html" class="nav-btn">ABOUT</a>
+    </nav>
     <h1>WHAT I'M INTO NOW</h1>
     <h2>Books I’ve read recently or am currently enjoying as an adult!</h2>
   </header>
-  <div class="filter-buttons">
-    <button class="filter-btn" data-genre="all">All</button>
-    <button class="filter-btn" data-genre="literaryfiction">Literary Fiction</button>
-    <button class="filter-btn" data-genre="speculative">Speculative</button>
-    <button class="filter-btn" data-genre="historicalfiction">Historical Fiction</button>
-    <button class="filter-btn" data-genre="selfhelp">Self Help</button>
-    <button class="filter-btn" data-genre="thriller">Thriller</button>
-  </div>
-  <main class="book-grid" id="nowBookList"></main>
+
+  <main id="main">
+    <div class="filter-container">
+      <div class="filter-buttons">
+        <button class="filter-btn" data-genre="all">All</button>
+        <button class="filter-btn" data-genre="literaryfiction">Literary Fiction</button>
+        <button class="filter-btn" data-genre="speculative">Speculative</button>
+        <button class="filter-btn" data-genre="historicalfiction">Historical Fiction</button>
+        <button class="filter-btn" data-genre="selfhelp">Self Help</button>
+        <button class="filter-btn" data-genre="thriller">Thriller</button>
+      </div>
+      <button id="addBookBtn" class="filter-btn btn-solid">Add Your Own Book</button>
+    </div>
+
+    <div id="formOverlay" class="overlay" style="display:none;">
+      <div class="overlay-content">
+        <form id="bookForm" enctype="multipart/form-data">
+          <h3>Add a Book</h3>
+          <label>Title: <input type="text" id="bookTitle" required></label><br>
+          <label>Genre: <input type="text" id="bookGenre" required></label><br>
+          <label>Rating (1-5): <input type="number" id="bookRating" min="1" max="5" required></label><br>
+          <label>Review: <textarea id="bookReview" required></textarea></label><br>
+          <label>Cover Image: <input type="file" id="bookImage" accept="image/*" required></label><br><br>
+          <button type="submit" class="filter-btn btn-solid">Submit</button>
+          <button type="button" id="cancelForm" class="filter-btn">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <section class="book-grid" id="nowBookList"></section>
+  </main>
   <footer id="site-footer">
     © <span id="footer-year"></span> My Book Journey · Designed by Natasha
   </footer>
@@ -35,4 +60,5 @@
     <img id="lightboxImg" src="" alt="Expanded Book Cover">
   </div>
 </body>
+
 </html>
