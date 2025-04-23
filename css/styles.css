@@ -417,7 +417,6 @@ footer {
     border: none;
 }
 
-/* 🔁 RESPONSIVE ENHANCEMENTS FOR TABLET & UP */
 @media (min-width: 768px) {
     .main-nav {
         flex-wrap: nowrap;
