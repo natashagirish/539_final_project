@@ -163,23 +163,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (containerId) {
-        displayBooks(bookArray, containerId);
-
         const list = document.getElementById(containerId);
         const storedBooks = JSON.parse(localStorage.getItem(storageKey) || "[]");
-
-        storedBooks.forEach(book => {
-            const card = document.createElement("div");
-            card.className = "book";
-            card.innerHTML = `
-                <img src="${book.img}" alt="Cover of ${book.title}">
-                <h3>${book.title}</h3>
-                <div class="book-rating">${book.rating}</div>
-                <p>${book.review}</p>
-            `;
-            list.appendChild(card);
-        });
-
         renderBooks("all", bookArray, storedBooks, list);
     }
 
@@ -272,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            if (file.size > 1024 * 1024) { // 1MB
+            if (file.size > 1024 * 1024) {
                 alert("Image too large! Please upload an image under 1MB.");
                 return;
             }
@@ -291,24 +276,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 existing.push(newBook);
                 localStorage.setItem(storageKey, JSON.stringify(existing));
 
-                // Re-render the whole list from scratch
                 renderBooks("all", bookArray, existing, bookList);
                 formOverlay.style.display = "none";
                 bookForm.reset();
-
-                const card = document.createElement("div");
-                card.className = "book";
-                card.innerHTML = `
-                    <img src="${newBook.img}" alt="Cover of ${newBook.title}">
-                    <h3>${newBook.title}</h3>
-                    <div class="book-rating">${newBook.rating}</div>
-                    <p>${newBook.review}</p>
-                `;
-                const updatedBooks = JSON.parse(localStorage.getItem(storageKey) || "[]");
-                renderBooks("all", bookArray, updatedBooks, bookList);
-                formOverlay.style.display = "none";
-                bookForm.reset();
-                card.scrollIntoView({ behavior: "smooth" });
             };
 
             reader.readAsDataURL(file);
