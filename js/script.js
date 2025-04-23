@@ -264,21 +264,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const reader = new FileReader();
             reader.onload = function (event) {
-                const newBook = {
-                    title: bookTitle.value,
-                    genre: bookGenre.value,
-                    rating: convertRatingToStars(bookRating.value),
-                    review: bookReview.value,
-                    img: event.target.result
+                const img = new Image();
+                img.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const compressed = canvas.toDataURL("image/jpeg", 0.6); // Compress
+
+                    const newBook = {
+                        title: bookTitle.value,
+                        genre: bookGenre.value,
+                        rating: convertRatingToStars(bookRating.value),
+                        review: bookReview.value,
+                        img: compressed
+                    };
+
+                    const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
+                    existing.push(newBook);
+                    localStorage.setItem(storageKey, JSON.stringify(existing));
+
+                    renderBooks("all", bookArray, existing, bookList);
+                    formOverlay.style.display = "none";
+                    bookForm.reset();
                 };
 
-                const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
-                existing.push(newBook);
-                localStorage.setItem(storageKey, JSON.stringify(existing));
-
-                renderBooks("all", bookArray, existing, bookList);
-                formOverlay.style.display = "none";
-                bookForm.reset();
+                img.src = event.target.result;
             };
 
             reader.readAsDataURL(file);
