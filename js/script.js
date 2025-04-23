@@ -304,7 +304,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="book-rating">${newBook.rating}</div>
                     <p>${newBook.review}</p>
                 `;
-                bookList.appendChild(card);
+                const updatedBooks = JSON.parse(localStorage.getItem(storageKey) || "[]");
+                renderBooks("all", bookArray, updatedBooks, bookList);
                 formOverlay.style.display = "none";
                 bookForm.reset();
                 card.scrollIntoView({ behavior: "smooth" });
