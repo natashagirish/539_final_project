@@ -130,138 +130,100 @@ const nowBooks = [
     }
 ];
 
-// Function to display books from an array into a container
 function displayBooks(bookArray, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
     bookArray.forEach(book => {
-        const card = document.createElement('div'); // Create a div for each book
-        card.className = 'book'; // Add class for styling
+        const card = document.createElement('div');
+        card.className = 'book';
         card.innerHTML = `
-        <img src="${book.img}" alt="Cover of ${book.title}">
-        <h3>${book.title}</h3>
-        <div class="book-rating">${book.rating}</div>
-        <p>${book.review}</p>
-      `;
+            <img src="${book.img}" alt="Cover of ${book.title}">
+            <h3>${book.title}</h3>
+            <div class="book-rating">${book.rating}</div>
+            <p>${book.review}</p>
+        `;
         container.appendChild(card);
     });
 }
 
-displayBooks(kidBooks, 'kidBookList');
-displayBooks(nowBooks, 'nowBookList');
-
-// Carousel logic for homepage image slider
 document.addEventListener("DOMContentLoaded", () => {
-    const track = document.querySelector(".carousel-track");
-    if (!track) return;
+    const kidList = document.getElementById("kidBookList");
+    const nowList = document.getElementById("nowBookList");
 
-    const slides = Array.from(track.children); // Get all image slides
-    const prevButton = document.getElementById("prevBtn"); // Prev arrow
-    const nextButton = document.getElementById("nextBtn"); // Next arrow
+    displayBooks(kidBooks, "kidBookList");
+    displayBooks(nowBooks, "nowBookList");
 
-    let currentIndex = 0; // Start at first slide
-
-    function updateSlidePosition() {
-        const slideWidth = slides[0].getBoundingClientRect().width; // Get slide width
-        track.style.transform = `translateX(-${slideWidth * currentIndex}px)`; // Move slide
-    }
-
-    nextButton.addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % slides.length; // Increment or loop back
-        updateSlidePosition(); // Update view
-    });
-
-    prevButton.addEventListener("click", () => {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Decrement or loop
-        updateSlidePosition();
-    });
-
-    window.addEventListener("resize", updateSlidePosition); // Recalculate on resize
-    updateSlidePosition(); // Initial position
-});
-
-// Show books dynamically based on genre filter
-function renderBooks(filter = "all") {
-    let bookArray, containerId;
-
-    if (document.getElementById("kidBookList")) {
-        bookArray = kidBooks;
-        containerId = "kidBookList";
-    } else if (document.getElementById("nowBookList")) {
-        bookArray = nowBooks;
-        containerId = "nowBookList";
-    } else {
-        return;
-    }
-
-    const list = document.getElementById(containerId);
-    list.innerHTML = ""; // Clear current content
-
-    bookArray
-        .filter(book => filter === "all" || book.genre === filter) // Filter by genre
-        .forEach(book => {
-            const bookEl = document.createElement("div");
-            bookEl.className = "book";
-            bookEl.innerHTML = `
-          <img src="${book.img}" alt="${book.title}">
-          <h3>${book.title}</h3>
-          <div class="book-rating">${book.rating}</div>
-          <p>${book.review}</p>
-        `;
-            list.appendChild(bookEl); // Append to grid
+    const bookList = nowList || kidList;
+    const storedBooks = JSON.parse(localStorage.getItem("customBooks") || "[]");
+    if (storedBooks.length && bookList) {
+        storedBooks.forEach(book => {
+            const card = document.createElement("div");
+            card.className = "book";
+            card.innerHTML = `
+                <img src="${book.img}" alt="Cover of ${book.title}">
+                <h3>${book.title}</h3>
+                <div class="book-rating">${book.rating}</div>
+                <p>${book.review}</p>
+            `;
+            bookList.appendChild(card);
         });
-}
+    }
 
-// Handle filter button clicks
-document.addEventListener("DOMContentLoaded", () => {
     renderBooks("all");
 
     const filterButtons = document.querySelectorAll(".filter-btn");
-
     filterButtons.forEach(btn => {
-        if (btn.dataset.genre === "all") {
-            btn.classList.add("active"); // Mark default active
-        }
-    });
-
-    filterButtons.forEach(btn => {
+        if (btn.dataset.genre === "all") btn.classList.add("active");
         btn.addEventListener("click", () => {
-            filterButtons.forEach(b => b.classList.remove("active")); // Clear active class
-            btn.classList.add("active"); // Add to clicked
-            renderBooks(btn.dataset.genre); // Render by genre
+            filterButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderBooks(btn.dataset.genre);
         });
     });
-});
 
-// Lightbox logic for fullscreen image on click
-document.addEventListener("DOMContentLoaded", () => {
+    const track = document.querySelector(".carousel-track");
+    if (track) {
+        const slides = Array.from(track.children);
+        const prevButton = document.getElementById("prevBtn");
+        const nextButton = document.getElementById("nextBtn");
+        let currentIndex = 0;
+
+        function updateSlidePosition() {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+        }
+
+        nextButton?.addEventListener("click", () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlidePosition();
+        });
+
+        prevButton?.addEventListener("click", () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlidePosition();
+        });
+
+        window.addEventListener("resize", updateSlidePosition);
+        updateSlidePosition();
+    }
+
     const lightbox = document.getElementById("lightbox");
     const lightboxImg = document.getElementById("lightboxImg");
     const closeBtn = document.getElementById("lightboxClose");
 
-    // Open lightbox
     document.addEventListener("click", e => {
         if (e.target.tagName === "IMG" && e.target.closest(".book")) {
-            lightboxImg.src = e.target.src; // Use clicked img
-            lightbox.classList.add("active"); // Show overlay
+            lightboxImg.src = e.target.src;
+            lightbox.classList.add("active");
         }
     });
 
-    // Close lightbox with close button
-    closeBtn.addEventListener("click", () => {
-        lightbox.classList.remove("active");
+    closeBtn?.addEventListener("click", () => lightbox.classList.remove("active"));
+    lightbox?.addEventListener("click", e => {
+        if (e.target === lightbox) lightbox.classList.remove("active");
     });
 
-    // Close lightbox if clicking outside the image
-    lightbox.addEventListener("click", e => {
-        if (e.target === lightbox) {
-            lightbox.classList.remove("active");
-        }
-    });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
     const addBookBtn = document.getElementById("addBookBtn");
     if (addBookBtn) {
         const formOverlay = document.getElementById("formOverlay");
@@ -273,9 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const bookRating = document.getElementById("bookRating");
         const bookReview = document.getElementById("bookReview");
         const bookImage = document.getElementById("bookImage");
-        const bookList = document.getElementById("nowBookList") || document.getElementById("kidBookList");
 
-        // Convert number rating to stars
         function convertRatingToStars(num) {
             return "⭐️".repeat(Math.max(1, Math.min(5, parseInt(num))));
         }
@@ -300,14 +260,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const reader = new FileReader();
             reader.onload = function (event) {
+                const newBook = {
+                    title: bookTitle.value,
+                    genre: bookGenre.value,
+                    rating: convertRatingToStars(bookRating.value),
+                    review: bookReview.value,
+                    img: event.target.result
+                };
+
+                const existing = JSON.parse(localStorage.getItem("customBooks") || "[]");
+                existing.push(newBook);
+                localStorage.setItem("customBooks", JSON.stringify(existing));
+
                 const card = document.createElement("div");
                 card.className = "book";
                 card.innerHTML = `
-                <img src="${event.target.result}" alt="Cover of ${bookTitle.value}">
-                <h3>${bookTitle.value}</h3>
-                <div class="book-rating">${convertRatingToStars(bookRating.value)}</div>
-                <p>${bookReview.value}</p>
-            `;
+                    <img src="${newBook.img}" alt="Cover of ${newBook.title}">
+                    <h3>${newBook.title}</h3>
+                    <div class="book-rating">${newBook.rating}</div>
+                    <p>${newBook.review}</p>
+                `;
                 bookList.appendChild(card);
                 formOverlay.style.display = "none";
                 bookForm.reset();
@@ -317,18 +289,46 @@ document.addEventListener("DOMContentLoaded", () => {
             reader.readAsDataURL(file);
         });
     }
-});
 
-
-// Page fade-in effect
-document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("fade-in");
+
+    const yearSpan = document.getElementById("footer-year");
+    if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 });
 
-// Set the footer year dynamically
-document.addEventListener("DOMContentLoaded", () => {
-    const yearSpan = document.getElementById("footer-year");
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
+function renderBooks(filter = "all") {
+    let bookArray, containerId;
+
+    if (document.getElementById("kidBookList")) {
+        bookArray = kidBooks;
+        containerId = "kidBookList";
+    } else if (document.getElementById("nowBookList")) {
+        bookArray = nowBooks;
+        containerId = "nowBookList";
+    } else {
+        return;
     }
-});
+
+    const list = document.getElementById(containerId);
+    list.innerHTML = "";
+
+    const storedBooks = JSON.parse(localStorage.getItem("customBooks") || "[]");
+    const combinedBooks = [...bookArray, ...storedBooks];
+
+    combinedBooks
+        .filter(book => filter === "all" || book.genre === filter)
+        .forEach(book => {
+            const bookEl = document.createElement("div");
+            bookEl.className = "book";
+            bookEl.innerHTML = `
+                <img src="${book.img}" alt="${book.title}">
+                <h3>${book.title}</h3>
+                <div class="book-rating">${book.rating}</div>
+                <p>${book.review}</p>
+            `;
+            list.appendChild(bookEl);
+        });
+}
+
+displayBooks(kidBooks, 'kidBookList');
+displayBooks(nowBooks, 'nowBookList');
