@@ -132,8 +132,8 @@ const nowBooks = [
 
 // Function to display books from an array into a container
 function displayBooks(bookArray, containerId) {
-    const container = document.getElementById(containerId); // Get container by ID
-    if (!container) return; // Exit if container is not found
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
     bookArray.forEach(book => {
         const card = document.createElement('div'); // Create a div for each book
@@ -144,18 +144,17 @@ function displayBooks(bookArray, containerId) {
         <div class="book-rating">${book.rating}</div>
         <p>${book.review}</p>
       `;
-        container.appendChild(card); // Add book card to container
+        container.appendChild(card);
     });
 }
 
-// Display both kid and now book arrays on respective pages
 displayBooks(kidBooks, 'kidBookList');
 displayBooks(nowBooks, 'nowBookList');
 
 // Carousel logic for homepage image slider
 document.addEventListener("DOMContentLoaded", () => {
-    const track = document.querySelector(".carousel-track"); // Get track container
-    if (!track) return; // Exit if not found
+    const track = document.querySelector(".carousel-track");
+    if (!track) return;
 
     const slides = Array.from(track.children); // Get all image slides
     const prevButton = document.getElementById("prevBtn"); // Prev arrow
@@ -182,11 +181,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlidePosition(); // Initial position
 });
 
-// Render books dynamically based on genre filter
+// Show books dynamically based on genre filter
 function renderBooks(filter = "all") {
     let bookArray, containerId;
 
-    // Decide which book list to use
     if (document.getElementById("kidBookList")) {
         bookArray = kidBooks;
         containerId = "kidBookList";
@@ -217,7 +215,7 @@ function renderBooks(filter = "all") {
 
 // Handle filter button clicks
 document.addEventListener("DOMContentLoaded", () => {
-    renderBooks("all"); // Default render
+    renderBooks("all");
 
     const filterButtons = document.querySelectorAll(".filter-btn");
 
@@ -276,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const bookImage = document.getElementById("bookImage");
     const bookList = document.getElementById("nowBookList") || document.getElementById("kidBookList");
 
-    // ⭐ Convert number rating (1–5) to stars
+    // Convert number rating to stars
     function convertRatingToStars(num) {
         return "⭐️".repeat(Math.max(1, Math.min(5, parseInt(num))));
     }
@@ -292,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
         bookForm.reset();
     });
 
-    // Handle form submission
+    // Form submission
     bookForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -325,13 +323,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Page fade-in effect
 document.addEventListener("DOMContentLoaded", () => {
-    document.body.classList.add("fade-in"); // Trigger CSS fade-in
+    document.body.classList.add("fade-in");
 });
 
 // Set the footer year dynamically
 document.addEventListener("DOMContentLoaded", () => {
     const yearSpan = document.getElementById("footer-year");
     if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear(); // Insert current year
+        yearSpan.textContent = new Date().getFullYear();
     }
 });
