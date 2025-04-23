@@ -272,6 +272,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            if (file.size > 1024 * 1024) { // 1MB
+                alert("Image too large! Please upload an image under 1MB.");
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function (event) {
                 const newBook = {
@@ -285,6 +290,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
                 existing.push(newBook);
                 localStorage.setItem(storageKey, JSON.stringify(existing));
+
+                // Re-render the whole list from scratch
+                renderBooks("all", bookArray, existing, bookList);
+                formOverlay.style.display = "none";
+                bookForm.reset();
 
                 const card = document.createElement("div");
                 card.className = "book";
@@ -327,6 +337,3 @@ function renderBooks(filter, baseBooks, savedBooks, list) {
             list.appendChild(bookEl);
         });
 }
-
-displayBooks(kidBooks, 'kidBookList');
-displayBooks(nowBooks, 'nowBookList');
