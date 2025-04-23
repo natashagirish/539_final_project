@@ -148,15 +148,26 @@ function displayBooks(bookArray, containerId) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const kidList = document.getElementById("kidBookList");
-    const nowList = document.getElementById("nowBookList");
+    let bookArray = null;
+    let containerId = null;
+    let storageKey = null;
 
-    displayBooks(kidBooks, "kidBookList");
-    displayBooks(nowBooks, "nowBookList");
+    if (document.getElementById("kidBookList")) {
+        bookArray = kidBooks;
+        containerId = "kidBookList";
+        storageKey = "customKidBooks";
+    } else if (document.getElementById("nowBookList")) {
+        bookArray = nowBooks;
+        containerId = "nowBookList";
+        storageKey = "customNowBooks";
+    }
 
-    const bookList = nowList || kidList;
-    const storedBooks = JSON.parse(localStorage.getItem("customBooks") || "[]");
-    if (storedBooks.length && bookList) {
+    if (containerId) {
+        displayBooks(bookArray, containerId);
+
+        const list = document.getElementById(containerId);
+        const storedBooks = JSON.parse(localStorage.getItem(storageKey) || "[]");
+
         storedBooks.forEach(book => {
             const card = document.createElement("div");
             card.className = "book";
@@ -166,11 +177,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="book-rating">${book.rating}</div>
                 <p>${book.review}</p>
             `;
-            bookList.appendChild(card);
+            list.appendChild(card);
         });
-    }
 
-    renderBooks("all");
+        renderBooks("all", bookArray, storedBooks, list);
+    }
 
     const filterButtons = document.querySelectorAll(".filter-btn");
     filterButtons.forEach(btn => {
@@ -178,7 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             filterButtons.forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
-            renderBooks(btn.dataset.genre);
+
+            const list = document.getElementById(containerId);
+            const storedBooks = JSON.parse(localStorage.getItem(storageKey) || "[]");
+            renderBooks(btn.dataset.genre, bookArray, storedBooks, list);
         });
     });
 
@@ -225,16 +239,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const addBookBtn = document.getElementById("addBookBtn");
-    if (addBookBtn) {
+    if (addBookBtn && containerId && storageKey) {
         const formOverlay = document.getElementById("formOverlay");
         const cancelForm = document.getElementById("cancelForm");
         const bookForm = document.getElementById("bookForm");
-
         const bookTitle = document.getElementById("bookTitle");
         const bookGenre = document.getElementById("bookGenre");
         const bookRating = document.getElementById("bookRating");
         const bookReview = document.getElementById("bookReview");
         const bookImage = document.getElementById("bookImage");
+        const bookList = document.getElementById(containerId);
 
         function convertRatingToStars(num) {
             return "⭐️".repeat(Math.max(1, Math.min(5, parseInt(num))));
@@ -268,9 +282,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     img: event.target.result
                 };
 
-                const existing = JSON.parse(localStorage.getItem("customBooks") || "[]");
+                const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
                 existing.push(newBook);
-                localStorage.setItem("customBooks", JSON.stringify(existing));
+                localStorage.setItem(storageKey, JSON.stringify(existing));
 
                 const card = document.createElement("div");
                 card.className = "book";
@@ -296,26 +310,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 });
 
-function renderBooks(filter = "all") {
-    let bookArray, containerId;
-
-    if (document.getElementById("kidBookList")) {
-        bookArray = kidBooks;
-        containerId = "kidBookList";
-    } else if (document.getElementById("nowBookList")) {
-        bookArray = nowBooks;
-        containerId = "nowBookList";
-    } else {
-        return;
-    }
-
-    const list = document.getElementById(containerId);
+function renderBooks(filter, baseBooks, savedBooks, list) {
     list.innerHTML = "";
-
-    const storedBooks = JSON.parse(localStorage.getItem("customBooks") || "[]");
-    const combinedBooks = [...bookArray, ...storedBooks];
-
-    combinedBooks
+    const allBooks = [...baseBooks, ...savedBooks];
+    allBooks
         .filter(book => filter === "all" || book.genre === filter)
         .forEach(book => {
             const bookEl = document.createElement("div");
