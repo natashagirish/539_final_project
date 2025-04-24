@@ -10,46 +10,51 @@
 
 <body>
   <header class="hero-header">
+
     <div class="skip"><a href="#main">Skip to Main Content</a></div>
-    <nav class="main-nav">
-      <a href="index.html" class="nav-btn">HOME</a>
-      <a href="younger.html" class="nav-btn">YOUNGER</a>
-      <a href="older.html" class="nav-btn active">OLDER</a>
-      <a href="about.html" class="nav-btn">ABOUT</a>
-    </nav>
-    <h1>WHAT I'M INTO NOW</h1>
-    <h2>Books I’ve read recently or am currently enjoying as an adult!</h2>
+    <div class="container">
+      <nav class="main-nav">
+        <a href="index.html" class="nav-btn">HOME</a>
+        <a href="younger.html" class="nav-btn">YOUNGER</a>
+        <a href="older.html" class="nav-btn active">OLDER</a>
+        <a href="about.html" class="nav-btn">ABOUT</a>
+      </nav>
+      <h1>WHAT I'M INTO NOW</h1>
+      <h2>Books I’ve read recently or am currently enjoying as an adult!</h2>
+    </div>
   </header>
 
   <main id="main">
-    <div class="filter-container">
-      <div class="filter-buttons">
-        <button class="filter-btn" data-genre="all">All</button>
-        <button class="filter-btn" data-genre="literaryfiction">Literary Fiction</button>
-        <button class="filter-btn" data-genre="speculative">Speculative</button>
-        <button class="filter-btn" data-genre="historicalfiction">Historical Fiction</button>
-        <button class="filter-btn" data-genre="selfhelp">Self Help</button>
-        <button class="filter-btn" data-genre="thriller">Thriller</button>
+    <div class="container">
+      <div class="filter-container">
+        <div class="filter-buttons">
+          <button class="filter-btn" data-genre="all">All</button>
+          <button class="filter-btn" data-genre="literaryfiction">Literary Fiction</button>
+          <button class="filter-btn" data-genre="speculative">Speculative</button>
+          <button class="filter-btn" data-genre="historicalfiction">Historical Fiction</button>
+          <button class="filter-btn" data-genre="selfhelp">Self Help</button>
+          <button class="filter-btn" data-genre="thriller">Thriller</button>
+        </div>
+        <button id="addBookBtn" class="filter-btn btn-solid">Add Your Own Book</button>
       </div>
-      <button id="addBookBtn" class="filter-btn btn-solid">Add Your Own Book</button>
-    </div>
 
-    <div id="formOverlay" class="overlay" style="display:none;">
-      <div class="overlay-content">
-        <form id="bookForm" enctype="multipart/form-data">
-          <h3>Add Your Own Book</h3>
-          <label>Title: <input type="text" id="bookTitle" required></label><br>
-          <label>Genre: <input type="text" id="bookGenre" required></label><br>
-          <label>Rating (1-5): <input type="number" id="bookRating" min="1" max="5" required></label><br>
-          <label>Review: <textarea id="bookReview" required></textarea></label><br>
-          <label>Cover Image: <input type="file" id="bookImage" accept="image/*" required></label><br><br>
-          <button type="submit" class="filter-btn btn-solid">Submit</button>
-          <button type="button" id="cancelForm" class="filter-btn">Cancel</button>
-        </form>
+      <div id="formOverlay" class="overlay" style="display:none;">
+        <div class="overlay-content">
+          <form id="bookForm" enctype="multipart/form-data">
+            <h3>Add Your Own Book</h3>
+            <label>Title: <input type="text" id="bookTitle" required></label><br>
+            <label>Genre: <input type="text" id="bookGenre" required></label><br>
+            <label>Rating (1-5): <input type="number" id="bookRating" min="1" max="5" required></label><br>
+            <label>Review: <textarea id="bookReview" required></textarea></label><br>
+            <label>Cover Image: <input type="file" id="bookImage" accept="image/*" required></label><br><br>
+            <button type="submit" class="filter-btn btn-solid">Submit</button>
+            <button type="button" id="cancelForm" class="filter-btn">Cancel</button>
+          </form>
+        </div>
       </div>
-    </div>
 
-    <section class="book-grid" id="nowBookList"></section>
+      <section class="book-grid" id="nowBookList"></section>
+    </div>
   </main>
   <footer id="site-footer">
     © <span id="footer-year"></span> My Book Journey · Designed by Natasha

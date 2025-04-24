@@ -35,6 +35,14 @@ main {
     flex: 1;
 }
 
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .skip a {
     position: absolute;
     color: var(--text-primary);
@@ -417,14 +425,14 @@ footer {
     border: none;
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 600px) {
     .main-nav {
         flex-wrap: nowrap;
         gap: 1rem;
     }
 
     .book-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         padding: 3rem 3rem;
     }
 
@@ -447,5 +455,12 @@ footer {
 
     .hero-banner {
         padding: 6rem 1rem 4rem;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .book-grid {
+      grid-template-columns: repeat(3, 1fr);
+      padding: 3rem 2rem;
     }
 }
